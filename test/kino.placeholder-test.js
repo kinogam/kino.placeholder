@@ -11,6 +11,13 @@ var TestSuit = {
         this.container.innerHTML = "<input type='text' placeholder='hello world' /><input type='text' />";
         this.placeHolderInput = $(this.container).find("[placeholder]")[0]
     },
+    getPlaceHolderInputFrontColor: function () {
+        var color = this.placeHolderInput.style.color;
+        if(color == 'rgb(187, 187, 187)'){
+            color = "#bbb";
+        }
+        return color;
+    },
     getPlaceHolderInputValue: function () {
         return this.placeHolderInput.value;
     },
@@ -164,4 +171,26 @@ test("如果使用placeHolder之后，输入框的值被其他脚本动态填充
    .blurOnPlaceHolderInput()
    .getPlaceHolderInputValue(),
    "other text2");
+});
+
+test("placeHolder值显示的时候为灰色(#bbb)", function () {
+    equal(TestSuit
+    .afterUsePlaceHolder()
+    .getPlaceHolderInputFrontColor(),
+    "#bbb");
+
+    equal(TestSuit
+    .focusOnPlaceHolderInput()
+    .blurOnPlaceHolderInput()
+    .getPlaceHolderInputFrontColor(),
+    "#bbb");
+});
+
+test("输入框填写的时候，字体颜色不为灰色(#bbb)", function () {
+    notEqual(TestSuit
+    .afterUsePlaceHolder()
+    .focusOnPlaceHolderInput()
+    .setPlaceHolderInputValue("xxx")
+    .getPlaceHolderInputFrontColor(),
+    "#bbb");
 });
